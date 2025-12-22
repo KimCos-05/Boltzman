@@ -1,0 +1,24 @@
+{
+    "num_side": 37,
+    "dt": 5e-16,
+    "total_time": 5e-9,
+    "dlog": 5000,
+    "file_base_path": "results",
+    "physical_params": {
+        "sx": 6.7e-08,
+        "sy": 6.7e-08,
+        "sz": 6.7e-08,
+        "r": 1.88e-10,
+        "m": 6.63e-26,
+        "T": 298.15
+    },
+    "visualization_params": {
+        "box_dims": [
+            6.7e-08,
+            6.7e-08,
+            6.7e-08
+        ],
+        "output_filename": "simulation.mp4",
+        "skip_particle": 10
+    }
+}
