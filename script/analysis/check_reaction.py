@@ -105,7 +105,7 @@ def main(run_count):
     times_valid = times[valid_mask]
     counts_valid = counts_reactant[valid_mask]
 
-    # 5. 그래프 그리기 (3단 콤보)
+    # 5. 그래프 그리기
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
     # (1) 농도 vs 시간 ([A] vs t)
@@ -156,4 +156,5 @@ if __name__ == "__main__":
     parser.add_argument('--run', type=int, required=True, help="Run number to analyze (e.g., 1)")
     args = parser.parse_args()
     
+
     main(args.run)
