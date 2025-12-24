@@ -3,12 +3,11 @@ import cupy as cp
 import math
 
 # Particle 생성 및 배치 함수.
-# Particle의 정보 : 위치(x,y,z), 속도(x,y,z), 물성(r,m)
+# Particle의 정보 : 위치(x,y,z), 속도(x,y,z), 물성(r,m), 종류
 def setParticle(sx, sy, sz, num, r, m): 
     N = num**3 
     
-    # [수정 핵심 1] 간격(Spacing)을 '입자 크기'가 아닌 '공간 크기 / 개수'로 설정
-    # 이렇게 하면 입자들이 전체 박스에 꽉 차게 등분됩니다.
+    # 입자의 배열 간격을 공간의 크기 / 개수로 설정
     dx = sx / num
     dy = sy / num
     dz = sz / num
@@ -17,12 +16,10 @@ def setParticle(sx, sy, sz, num, r, m):
     gx, gy, gz = np.meshgrid(np.arange(num), np.arange(num), np.arange(num), indexing='ij') 
     gx, gy, gz = gx.ravel(), gy.ravel(), gz.ravel() 
 
-    # [수정 핵심 2] 위치 계산 (격자 인덱스 * 간격 + 반칸 오프셋)
-    # dx/2.0을 더해주는 이유는 0번 입자가 벽에 딱 붙지 않고, 자기 칸의 중앙에 오게 하기 위함입니다.
+    # 위치 계산 : 격자 인덱스 * 간격 + 반칸 오프셋
+    # dx/2.0을 더해주는 이유는 0번 입자가 벽에 딱 붙지 않고, 자기 칸의 중앙에 오게 하기 위함.
     
-    # + 약간의 무작위성(Jitter) 추가:
-    # 완벽한 바둑판 배열은 "고체(결정)" 상태이므로, 기체처럼 보이게 하려면
-    # 자기 구역 내에서 위치를 살짝 흔들어주는 것이 좋습니다. (평형 상태 모사)
+    # + 약간의 무작위성(Jitter) 추가. 기체 상태에서는 결정성이 없으므로
     rng = np.random.default_rng()
     jitter_scale = 0.2 # 자기 구역의 20% 정도만 흔들림 (충돌 방지하며 랜덤화)
     
