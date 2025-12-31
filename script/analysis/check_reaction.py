@@ -7,14 +7,14 @@ import argparse
 
 def main(run_count):
     # 1. 경로 설정 
-    # 현재 실행 중인 파일(check_reaction.py)의 위치를 기준으로 상위 폴더를 탐색합니다.
+    # 프로젝트 파일 구조를 감안하여 상위 폴더 탐색
     current_file_path = os.path.abspath(__file__)
     analysis_dir = os.path.dirname(current_file_path) # script/analysis
     script_dir = os.path.dirname(analysis_dir)        # script
     
-    # 예상되는 results 폴더 위치 후보들
+    # 예상되는 results 폴더 위치 후보들 모두 탐색
     possible_paths = [
-        os.path.join(script_dir, 'results'),          # script/results (가장 유력)
+        os.path.join(script_dir, 'results'),          # script/results
         os.path.join(script_dir, '..', 'results'),    # 프로젝트 루트/results
         "results"                                     # 현재 실행 위치/results
     ]
@@ -35,7 +35,7 @@ def main(run_count):
     step_dir = os.path.join(run_dir, 'step')
     config_path = os.path.join(run_dir, 'config.json')
 
-    # 2. 설정 파일(dt) 읽기
+    # 2. 설정 파일 읽기
     if not os.path.exists(config_path):
         print(f"오류: {config_path} 가 없습니다.")
         return
@@ -43,7 +43,7 @@ def main(run_count):
     with open(config_path, 'r') as f:
         config = json.load(f)
     
-    dt = config.get('dt', 1e-15) # dt를 못 찾으면 기본값
+    dt = config.get('dt', 1e-15) # dt를 못 찾으면 기본값 사용
     
     # 3. 파일 리스트 가져오기
     file_pattern = os.path.join(step_dir, 'step_*.npz')
@@ -60,8 +60,8 @@ def main(run_count):
 
     # 4. 데이터 추출
     times = []
-    counts_reactant = [] # 반응물 (Type 1)
-    counts_product = []  # 생성물 (Type 2 or 3)
+    counts_reactant = [] # 반응물
+    counts_product = []  # 생성물
 
     for filepath in files:
         try:
@@ -70,7 +70,7 @@ def main(run_count):
             
             # types 배열이 있는지 확인
             if 'types' not in data:
-                print(f"경고: {os.path.basename(filepath)} 파일에 'types' 데이터가 없습니다. (boltzman.py 수정 후 다시 돌리셨나요?)")
+                print(f"{os.path.basename(filepath)} 파일에 'types' 데이터가 없습니다.")
                 continue
                 
             types = data['types']
@@ -80,8 +80,8 @@ def main(run_count):
             current_time = step_num * dt
             
             # 개수 세기
-            n_reactant = np.sum(types == 1) # Type 1: 반응물
-            n_product = np.sum(types >= 2)  # Type 2 이상: 생성물
+            n_reactant = np.sum(types == 1) # 반응물
+            n_product = np.sum(types >= 2)  # 생성물
             
             times.append(current_time)
             counts_reactant.append(n_reactant)
@@ -118,7 +118,6 @@ def main(run_count):
     axes[0].grid(True)
 
     # (2) 1차 반응 검증 (ln[A] vs t)
-    # 직선이면 1차 반응
     ln_A = np.log(counts_valid)
     axes[1].plot(times_valid, ln_A, 'g-')
     axes[1].set_title('First Order Check (ln[A] vs t)')
@@ -133,7 +132,6 @@ def main(run_count):
         axes[1].legend()
 
     # (3) 2차 반응 검증 (1/[A] vs t)
-    # 직선이면 2차 반응
     inv_A = 1.0 / counts_valid
     axes[2].plot(times_valid, inv_A, 'm-')
     axes[2].set_title('Second Order Check (1/[A] vs t)')
@@ -158,3 +156,4 @@ if __name__ == "__main__":
     
 
     main(args.run)
+
