@@ -38,11 +38,11 @@ def main(run_dir, output_filename, box_dims, skip_particle, anim_interval, anim_
         # RGBA: [R, G, B, Alpha]
         colors = np.full((len(types), 4), [0.8, 0.8, 0.8, 0.1]) 
         
-        # Type 1 (반응물): 파란색 (진하게)
+        # Type 1
         mask_reactant = (types == 1)
         colors[mask_reactant] = [0.0, 0.0, 1.0, 0.8]
         
-        # Type 2 이상 (생성물): 빨간색 (진하게)
+        # Type 2
         mask_product = (types >= 2)
         colors[mask_product] = [1.0, 0.0, 0.0, 0.8]
         
@@ -160,4 +160,5 @@ if __name__ == '__main__':
     output_file = os.path.join(run_path, f'reaction_movie_{args.run}.mp4')
     
     # 메인 함수 실행
+
     main(step_dir, output_file, [sx, sy, sz], args.skip, 30, 150)
