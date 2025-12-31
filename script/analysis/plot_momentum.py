@@ -136,8 +136,7 @@ if __name__ == '__main__':
     try:
         import matplotlib
         
-        # 예시: results/run_3 폴더의 마지막 파일(-1)을 분석하고 graph.png로 저장
-        # 실제 사용할 때는 이 값을 바꾸거나, 외부에서 main()을 호출하세요.
+        # 테스트용
         target_run_count = 3 
         
         # 폴더가 실제로 있는지 확인 후 실행
