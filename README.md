@@ -79,7 +79,7 @@ Boltzman/
 | **초기 (Initial)** | 100 ~ 1,000 | **4.06초** | 고밀도 격자 배치 (Dense Lattice) |
 | **후기 (Equilibrium)** | 300,000 ~ 600,000 | **0.24초** | 균일 분포 평형 상태 (Homogeneous) |
 
-![alt text](step_duration_plot.png)
+![alt text](graph/step_duration_plot.png)
 
 > **Note**: 소요 시간은 데이터 저장 간격(`dlog = 100step`) 당 측정된 시간입니다.
 
@@ -87,8 +87,8 @@ Boltzman/
 
 ### 시뮬레이션 결과 (Simulation result)
 
-![alt text](momentum_distribution_inital.png)
-![alt text](momentum_distribution_final.png)
+![alt text](graph/momentum_distribution_inital.png)
+![alt text](graph/momentum_distribution_final.png)
 
 <video controls src="simulation_12_2-1.mp4" title="Title"></video>
 
